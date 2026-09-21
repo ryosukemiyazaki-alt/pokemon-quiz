@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <title>どっちが上？ | ポケモン種族値クイズ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="game.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="header"><a class="brand" href="./index.html"><span class="brand-icon" aria-hidden="true">↗</span> どっちが上？</a><span class="edition">種族値チャレンジ <span class="dot"></span></span></header>
+    <main>
+      <section id="setup">
+        <div class="hero"><p class="eyebrow">POKÉMON STATS QUIZ</p><h1>その強さ、<br>見抜ける？<span class="spark">✳</span></h1><p class="intro">2匹のポケモン。比べるのは、ひとつの能力。<br>種族値が高い方を選んで、全10問に挑戦しよう。</p></div>
+        <div class="preview" aria-hidden="true"><div class="preview-head"><span>たとえば、こんな勝負。</span><span class="pill">すばやさ</span></div><div class="preview-pair"><div><span class="mini-id">No.025</span><strong>ピカチュウ</strong><div class="sample-bars"><i style="width:45%"></i><i style="width:65%"></i><i style="width:90%"></i></div></div><span class="versus">VS</span><div><span class="mini-id">No.003</span><strong>フシギバナ</strong><div class="sample-bars purple"><i style="width:80%"></i><i style="width:82%"></i><i style="width:80%"></i></div></div></div><div class="preview-foot">名前だけで、どこまでわかる？</div></div>
+        <section class="settings" aria-labelledby="settings-title"><div class="section-title"><h2 id="settings-title">チャレンジを設定</h2><span>01 / READY</span></div><fieldset><legend>比べる能力</legend><div id="stat-options" class="chips"></div></fieldset><fieldset><legend>出題するポケモン</legend><div class="scope-options"><label><input type="radio" name="scope" value="kanto" checked><span><strong>まずはカントー</strong><small>図鑑No.001–151・通常のすがた</small></span></label><label><input type="radio" name="scope" value="all"><span><strong>すべてに挑戦</strong><small id="all-count">共有シートの全データ</small></span></label></div></fieldset><button id="start" class="primary">クイズをはじめる <span>→</span></button><p class="hint">全10問・時間制限なし・同じ数値なら「同じ」</p></section>
+      </section>
+      <section id="play" hidden aria-labelledby="question-title"><div class="game-top"><button id="quit" class="text-button">← 設定に戻る</button><span id="score" class="score"></span></div><div class="progress-label"><span id="question-count"></span><span id="streak"></span></div><div class="progress-track"><div id="progress"></div></div><div class="question-heading"><p class="eyebrow">WHICH IS HIGHER?</p><h1 id="question-title"><span id="stat-name"></span>が高いのは？</h1><p>種族値を比べて、ひとつ選ぼう。</p></div><div class="battle"><button id="left-choice" class="pokemon-card"><span class="card-letter">A</span><span class="dex"></span><strong class="pokemon-name"></strong><span class="stat-orb">?</span><span class="card-caption">こっちが高い</span></button><span class="battle-vs" aria-hidden="true">VS</span><button id="right-choice" class="pokemon-card violet"><span class="card-letter">B</span><span class="dex"></span><strong class="pokemon-name"></strong><span class="stat-orb">?</span><span class="card-caption">こっちが高い</span></button></div><button id="tie-choice" class="tie-button">＝ 同じ</button><div id="feedback" class="feedback" role="status" aria-live="polite"></div><button id="next" class="primary" hidden>次の問題へ →</button></section>
+      <section id="result" hidden aria-labelledby="result-title"><p class="eyebrow">CHALLENGE COMPLETE</p><h1 id="result-title" tabindex="-1">ナイスチャレンジ！</h1><p class="result-score"><span id="final-score"></span><span> / 10</span></p><p id="result-message"></p><div class="result-metrics"><div><span>正解率</span><strong id="accuracy"></strong></div><div><span>最高連続正解</span><strong id="best-streak"></strong></div><div><span>この設定のベスト</span><strong id="best-score"></strong></div></div><div class="result-actions"><button id="retry" class="primary">もう一度挑戦 →</button><button id="settings-back" class="tie-button">設定を変える</button></div><div class="section-title"><h2>今回のふりかえり</h2><span>REVIEW</span></div><div id="review" class="review"></div></section>
+    </main>
+    <footer><span>POKÉMON STATS QUIZ</span><p>種族値は共有スプレッドシートに準拠。レベルや育成による実数値とは異なります。<br>ファン制作の非公式クイズです。<a href="https://docs.google.com/spreadsheets/d/1XHgc37639sI5U1H1Wj-DQW6wfC3COjiwlztFuti4zI0/edit" target="_blank" rel="noopener noreferrer">出典シート ↗</a></p></footer>
+  </div>
+</body>
+</html>
