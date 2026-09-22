@@ -59,7 +59,6 @@ function setPokemonSprite(card, pokemon) {
 }
 function renderQuestion() {
   clearEffects();
-  $('radar-comparison')?.remove();
   answered = false;
   const q = questions[current];
   $('question-count').textContent = `QUESTION ${String(current + 1).padStart(2, '0')} / 10`;
@@ -109,61 +108,12 @@ function answer(choice) {
   const explanation = q.correct === 'tie' ? `どちらも ${q.left[q.stat]}。同じ種族値です。` : `${q[q.correct].name}の方が ${Math.abs(q.left[q.stat] - q.right[q.stat])} 高い！`;
   $('feedback').textContent = `${correct ? '✓ 正解！' : '惜しい！'} ${explanation}`;
   $('feedback').className = `feedback ${correct ? 'correct' : 'incorrect'}`;
-  renderRadarComparison(q);
   $('score').textContent = `${score} 問正解`;
   $('progress').style.width = `${(current + 1) * 10}%`;
   $('streak').textContent = streak > 1 ? `${streak} 連続正解！` : '自分のペースで挑戦';
   $('next').textContent = current === 9 ? '結果を見る →' : '次の問題へ →'; $('next').hidden = false;
   $('next').focus({ preventScroll: true });
   if (correct) celebrate();
-}
-function renderRadarComparison(question) {
-  $('radar-comparison')?.remove();
-  const section = document.createElement('section');
-  section.id = 'radar-comparison'; section.className = 'radar-comparison';
-  section.setAttribute('aria-label', '6つの種族値の比較');
-  const heading = document.createElement('h2'); heading.textContent = '6つの能力を見くらべよう';
-  const note = document.createElement('p'); note.className = 'radar-note';
-  note.textContent = '共通スケール：中心 0 → 外周 300（目盛り 60）';
-  const grid = document.createElement('div'); grid.className = 'radar-grid';
-  // Clockwise: HP, Attack, Defense, Speed, Sp. Defense, Sp. Attack.
-  const axes = ['hp', 'attack', 'defense', 'speed', 'spDefense', 'spAttack'];
-  const svgNS = 'http://www.w3.org/2000/svg';
-  const point = (index, radius) => {
-    const angle = -Math.PI / 2 + index * Math.PI / 3;
-    return [160 + Math.cos(angle) * radius, 145 + Math.sin(angle) * radius];
-  };
-  const element = (tag, attrs, text) => {
-    const node = document.createElementNS(svgNS, tag);
-    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
-    if (text !== undefined) node.textContent = text;
-    return node;
-  };
-  for (const side of ['left', 'right']) {
-    const pokemon = question[side];
-    const figure = document.createElement('figure'); figure.className = `radar-figure ${side}`;
-    const caption = document.createElement('figcaption'); caption.textContent = pokemon.name;
-    const svg = element('svg', { viewBox: '0 0 320 290', role: 'img', 'aria-label': `${pokemon.name}：${axes.map(k => `${stats[k]} ${pokemon[k]}`).join('、')}` });
-    for (let ring = 1; ring <= 5; ring++) {
-      svg.append(element('polygon', { points: axes.map((_, i) => point(i, ring * 18).join(',')).join(' '), class: 'radar-ring' }));
-    }
-    axes.forEach((key, i) => {
-      const [x, y] = point(i, 90);
-      svg.append(element('line', { x1: 160, y1: 145, x2: x, y2: y, class: 'radar-axis' }));
-    });
-    svg.append(element('polygon', { points: axes.map((key, i) => point(i, pokemon[key] / 300 * 90).join(',')).join(' '), class: 'radar-area' }));
-    axes.forEach((key, i) => {
-      const [x, y] = point(i, pokemon[key] / 300 * 90);
-      svg.append(element('circle', { cx: x, cy: y, r: 3, class: 'radar-dot' }));
-      const [labelX, labelY] = point(i, 120);
-      const label = element('text', { x: labelX, y: labelY - 3, 'text-anchor': 'middle', class: key === question.stat ? 'radar-label active' : 'radar-label' });
-      label.append(element('tspan', { x: labelX }, stats[key]));
-      label.append(element('tspan', { x: labelX, dy: 18, class: 'radar-value' }, String(pokemon[key])));
-      svg.append(label);
-    });
-    figure.append(caption, svg); grid.append(figure);
-  }
-  section.append(heading, note, grid); $('feedback').after(section);
 }
 function finish() {
   show('result');
